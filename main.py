@@ -20,7 +20,7 @@ def unpack_struct(buffer, format_char, size=4):
     return list(struct.unpack(f"{int(len(buffer) / size)}{format_char}", buffer))
 
 
-@profile
+# @profile
 def draw(curvesnumpoints, curveswidth, curvescolors, curvespoints):
     """Build the svg document with the curves"""
     # https://github.com/mozman/svgwrite/issues/25
@@ -38,7 +38,7 @@ def draw(curvesnumpoints, curveswidth, curvescolors, curvespoints):
 
     # For each curve
     for curve_points in curvesnumpoints:
-        group = dwg.add(dwg.g(id=f"curve{curve_index}"))
+        group = dwg.g(id=f"curve{curve_index}")
         width = str(curveswidth[curve_index])
         color = curvescolors[curve_index]
         stroke = f"rgb({color[0]},{color[1]},{color[2]})"
@@ -52,16 +52,15 @@ def draw(curvesnumpoints, curveswidth, curvescolors, curvespoints):
                         stroke_linejoin="round")
 
         # For each point in the curve
-        for i in range(curve_points):
-            x = curvespoints[points_index + i][0]
-            y = curvespoints[points_index + i][1]
-
-            if i == 0:
-                path.push(f"M{x} {y} ")
-            else:
-                path.push(f"L{x} {y} ")
+        x = curvespoints[points_index][0]
+        y = curvespoints[points_index][1]
+        path.push(f"M{x} {y} ")
+        for i in range(1, curve_points):
+            x, y = curvespoints[points_index + i]
+            path.push(f"L{x} {y} ")
 
         group.add(path)
+        dwg.add(group)
         points_index += curve_points
         curve_index += 1
 
@@ -112,9 +111,9 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print(f"Usage: {sys.argv[0]} Session.plist.xml")
         exit(1)
-    # import cProfile
-    # cp = cProfile.Profile()
-    # cp.enable()
+    import cProfile
+    cp = cProfile.Profile()
+    cp.enable()
     main(sys.argv[1])
-    # cp.disable()
-    # cp.dump_stats('program.prof')
+    cp.disable()
+    cp.dump_stats('program.prof')
