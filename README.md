@@ -28,7 +28,7 @@ dwg = svgwrite.Drawing(
 ### `cProfile` and `snakeviz`
 
 ```bash
-rm -f program.prof noname.svg && time python main.py Data/Lezione\ 1-2\ MMP/Session.plist.xml && snakeviz program.prof
+rm -f program.prof out.svg && time python main.py Data/Lezione\ 1-2\ MMP/Session.plist.xml && snakeviz program.prof
 ```
 
 Converted all of the `.format(...)` to `f"..."` strings.
@@ -41,6 +41,12 @@ rm -f main.py.lprof main.py.prof && time kernprof -l main.py Data/Lezione\ 1-2\ 
 
 ```bash
 python -m line_profiler main.py.lprof
+```
+
+All together
+
+```bash
+rm -f main.py.lprof main.py.prof out.svg && time kernprof -l main.py Data/Lezione\ 1-2\ MMP/Session.plist.xml && python -m line_profiler main.py.lprof
 ```
 
 _BEFORE:_
@@ -118,3 +124,13 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
     66
     67         1          1.0      1.0      0.0      return dwg
 ```
+
+### `svgwrite` and `lxml`
+
+_BEFORE:_
+1.3-1.4s
+
+_AFTER:_
+0.5-0.6s
+
+`round(x,4)` makes it go from 1.16 to 1.38
