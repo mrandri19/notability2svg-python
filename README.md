@@ -1,9 +1,29 @@
-# Appunti
+# notability2svg-python
 
-Ho unzippato il file `.note`
-`Session.plist`
+A python script to convert Notability's `.note` files to `svg`.
+
+## Usage
+
+- Unzip your `.note` file
+- Enter the created directory
+- Convert the `Session.plist` file into `Session.plist.xml` using, for example, `plistutil -i Session.plist > Session.plist.xml`
+- `python main.py Session.plist.xml`
+
+Your svg file will be `out.svg`
+
+## Dependencies
+
+- lxml
 
 ## Benchmarking
+
+### Profiling information of the final version
+
+Created with snakeviz and cProfile
+
+![screenshot of snakeviz](cProfile.png)
+
+Some notes on how I have optimized its performance
 
 ### `time`
 
