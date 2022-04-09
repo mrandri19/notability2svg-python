@@ -83,7 +83,7 @@ def main(filename):
     """The main function"""
     with open(filename, "rb") as file:
         plist = p.load(file)
-        dict_with_data = plist['$objects'][8]
+        dict_with_data = plist['$objects'][11]
 
         curvespoints_packed = dict_with_data['curvespoints']
         curvespoints = unpack_struct(curvespoints_packed, "f")
